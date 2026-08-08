@@ -1,8 +1,9 @@
 -- ========================================
 -- ESQUEMA DE BASE DE DATOS
+-- Pegar completo en Supabase > SQL Editor > Run
 -- ========================================
 
--- Tabla de fotos
+-- Tabla de fotos (portfolio / "Trabajos")
 create table photos (
     id uuid primary key default gen_random_uuid(),
     storage_path text not null,
@@ -12,16 +13,30 @@ create table photos (
     sort_order integer not null default 0,
     published boolean not null default false,
     created_at timestamptz not null default now()
-)
+);
 
--- Tabla de contenido de texto del sitio (hero, bio, contacto, etc)
--- Un modelo clave/valor: simple y flexible, sin tener que migrar la tabla
--- cada vez que agreguen un campo de texto nuevo al sitio.
+-- Tabla de entradas de diario / noticias ("Journal")
+create table journal (
+    id uuid primary key default gen_random_uuid(),
+    title text not null default '',
+    excerpt text not null default '',
+    body text not null default '',
+    category text not null default 'General',
+    cover_path text not null default '',
+    sort_order integer not null default 0,
+    published boolean not null default false,
+    created_at timestamptz not null default now()
+);
 
+-- Tabla de contenido de texto/imagen del sitio (hero, bio, contacto, etc)
+-- Modelo clave/valor: simple y flexible, sin tener que migrar la tabla
+-- cada vez que se agrega un campo nuevo al sitio. Para imágenes, el
+-- "value" guarda el storage_path dentro del bucket "photos" (no la URL
+-- completa), igual que en la tabla `photos`.
 create table site_content (
     key text primary key,
     value text not null default ''
-)
+);
 
 -- ============================================================
 -- ROW LEVEL SECURITY (RLS)
@@ -31,28 +46,35 @@ create table site_content (
 -- ============================================================
 
 alter table photos enable row level security;
-alter table site_content enable row level security 
+alter table journal enable row level security;
+alter table site_content enable row level security;
 
 -- cualquier visitante (rol "anon") puede LEER solo las fotos publicadas
 create policy "Fotos publicadas son publicas"
     on photos for select
-    to anon 
+    to anon
+    using (published = true);
+
+-- cualquier visitante puede leer solo las entradas de journal publicadas
+create policy "Journal publicado es publico"
+    on journal for select
+    to anon
     using (published = true);
 
 -- cualquier visitante puede leer el contenido de texto del sitio
 create policy "Contenido del sitio es publico"
     on site_content for select
     to anon
-    using (true)
+    using (true);
 
 -- Solo un usuario autenticado (logueado en /panel) puede ver
 -- todas las fotos (publicadas o no), insertar, editar o borrar
-create policy "Usuarios autenticados pueden leer todo"
+create policy "Usuarios autenticados pueden leer todas las fotos"
     on photos for select
     to authenticated
     using (true);
 
-create policy "Usuarios auntenticados pueden insertar fotos"
+create policy "Usuarios autenticados pueden insertar fotos"
     on photos for insert
     to authenticated
     with check (true);
@@ -67,6 +89,28 @@ create policy "Usuarios autenticados pueden borrar fotos"
     to authenticated
     using (true);
 
+-- Mismo esquema de permisos para journal
+create policy "Usuarios autenticados pueden leer todo el journal"
+    on journal for select
+    to authenticated
+    using (true);
+
+create policy "Usuarios autenticados pueden insertar journal"
+    on journal for insert
+    to authenticated
+    with check (true);
+
+create policy "Usuarios autenticados pueden editar journal"
+    on journal for update
+    to authenticated
+    using (true);
+
+create policy "Usuarios autenticados pueden borrar journal"
+    on journal for delete
+    to authenticated
+    using (true);
+
+-- Contenido del sitio: solo autenticados escriben
 create policy "Usuarios autenticados pueden editar contenido"
     on site_content for update
     to authenticated
@@ -78,16 +122,17 @@ create policy "Usuarios autenticados pueden insertar contenido"
     with check (true);
 
 -- ============================================================
--- STORAGE: bucket para las imágenes
--- Esto se puede crear desde el Dashboard (Storage > New bucket)
--- pero lo dej0 acá para que quede documentado.
+-- STORAGE: bucket único para todas las imágenes del sitio
+-- (fotos de portfolio, tapas de journal, foto de hero/perfil).
+-- Se puede crear desde el Dashboard (Storage > New bucket) pero
+-- lo dejamos acá para que quede documentado y se cree solo.
 -- ============================================================
 
 insert into storage.buckets (id, name, public)
 values ('photos', 'photos', true)
 on conflict (id) do nothing;
 
--- cualquiera puede ver las imagenes (bucket publico, son fotos de porfolio)
+-- cualquiera puede ver las imágenes (bucket público, son fotos de portfolio)
 create policy "Imagenes son publicas"
     on storage.objects for select
     to public
@@ -99,18 +144,33 @@ create policy "Usuarios autenticados pueden subir imagenes"
     to authenticated
     with check (bucket_id = 'photos');
 
+create policy "Usuarios autenticados pueden actualizar imagenes"
+    on storage.objects for update
+    to authenticated
+    using (bucket_id = 'photos');
+
 create policy "Usuarios autenticados pueden borrar imagenes"
     on storage.objects for delete
     to authenticated
-    using (bucket_id = 'photos')
+    using (bucket_id = 'photos');
 
 -- ============================================================
 -- Datos iniciales de ejemplo para site_content
+-- Estos textos se editan después desde /panel/dashboard.
+-- Las claves *_image_path arrancan vacías: hasta que no subas una
+-- imagen desde el panel, la sección muestra un color de fondo liso.
 -- ============================================================
 
-insert into site_content (key, value) values 
-    ('hero_title', 'Nombre del Fotógrafo'),
-    ('hero_subtitle', "Fotografía editorial y de autor"),
-    ('about_text', 'Escribí acpa la biografía.'),
-    ('contact_email', 'contacto@ejemplo.com')
+insert into site_content (key, value) values
+    ('site_name', 'Tu Nombre'),
+    ('hero_eyebrow', 'Fotógrafo · Tu Ciudad'),
+    ('hero_title', 'Tu Nombre'),
+    ('hero_tagline', 'Una frase corta que describa tu trabajo y tu mirada como fotógrafo.'),
+    ('hero_image_path', ''),
+    ('about_heading', 'Hago fotografías que se sienten menos como imágenes y más como recuerdos.'),
+    ('about_text', 'Escribí acá tu biografía. Podés usar varios párrafos: cada salto de línea se respeta al mostrarlo en la web.'),
+    ('about_image_path', ''),
+    ('contact_email', 'contacto@ejemplo.com'),
+    ('contact_heading', 'Hablemos de tu próximo proyecto.'),
+    ('contact_text', 'Encargos, colaboraciones o simplemente saludar: leo todos los mensajes y respondo personalmente.')
 on conflict (key) do nothing;

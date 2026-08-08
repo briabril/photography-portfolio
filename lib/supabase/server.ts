@@ -1,7 +1,7 @@
-/** Cliente de Supabase para SERVIDOR: Server Components (page.tsx sin "use client"),
+/** Cliente de Supabase para SERVIDOR! Server Components (page.tsx sin "use client"),
  * Server Actions y Route Handlers.
  * 
- * La diferencia clabe con client.ts: este lee/escribe la sesión del usuario
+ * La diferencia clave con client.ts es que este lee/escribe la sesión del usuario
  * desde las cookies de la request, porque en el servidor no hay localStorage
  * del navegador donde guardar el login. Por eso next/headers y cookies()
  */
