@@ -18,90 +18,128 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
     target: ref,
     offset: ["start start", "end start"],
   })
-  
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "12%"])
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
-  const overlay = useTransform(scrollYProgress, [0, 1], [0.3, 0.65])
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"])
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
+
+  const words = title.trim().split(" ")
+  const titleLead = words.length > 1 ? words.slice(0, -1).join(" ") : words[0]
+  const titleLast = words.length > 1 ? words[words.length - 1] : ""
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.2 }
-    }
+      transition: { staggerChildren: 0.1, delayChildren: 0.15 },
+    },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
-    }
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+    },
+  }
+
+  const frameVariants = {
+    hidden: { opacity: 0, y: 28, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.25 },
+    },
   }
 
   return (
-    <section id="top" ref={ref} className="relative h-svh min-h-160 w-full overflow-hidden bg-ink select-none">
-      <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform z-0">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center contrast-[1.05] brightness-[0.9]"
-          />
-        ) : (
-          <div className="h-full w-full bg-ink-soft" />
-        )}
-        <motion.div 
-          style={{ opacity: overlay }} 
-          className="absolute inset-0 bg-linear-to-t from-ink via-ink/40 to-transparent mix-blend-multiply" 
-        />
-      </motion.div>
-
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-6 pb-16 md:pb-24 lg:px-10"
-      >
-        <motion.p
-          variants={itemVariants}
-          className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-glow"
+    <section
+      id="top"
+      ref={ref}
+      className="relative overflow-hidden bg-background pt-28 pb-20 md:pt-40 md:pb-28"
+    >
+      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-6 md:grid-cols-12 md:gap-8 lg:gap-16 lg:px-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="md:col-span-6 lg:col-span-6"
         >
-          <span className="h-px w-10 bg-linear-to-r from-glow/70 to-transparent" />
-          {eyebrow}
-        </motion.p>
+          <motion.p
+            variants={itemVariants}
+            className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-accent"
+          >
+            <span className="h-px w-10 bg-accent/50" />
+            {eyebrow}
+          </motion.p>
 
-        <motion.h1
-          variants={itemVariants}
-          className="max-w-5xl font-serif text-[clamp(2.5rem,7.5vw,6.5rem)] font-extralight tracking-tight leading-[0.95] text-ink-foreground text-balance"
-        >
-          {title}
-        </motion.h1>
+          <motion.h1 className="font-serif text-[clamp(2.75rem,6.5vw,5.25rem)] font-extralight leading-[0.95] tracking-tight text-foreground text-balance">
+            <motion.span variants={itemVariants} className="block">
+              {titleLead}
+            </motion.span>
+            {titleLast && (
+              <motion.span variants={itemVariants} className="block italic text-accent">
+                {titleLast}
+              </motion.span>
+            )}
+          </motion.h1>
+
+          <motion.p
+            variants={itemVariants}
+            className="mt-8 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground md:text-base"
+          >
+            {tagline}
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="mt-10">
+            <a
+              href="#work"
+              className="group inline-flex items-center gap-3 rounded-full border border-foreground/25 py-3 pl-6 pr-5 text-xs font-semibold uppercase tracking-[0.25em] text-foreground transition-colors duration-300 hover:border-foreground hover:bg-foreground hover:text-background"
+            >
+              Ver trabajos seleccionados
+              <ArrowDownRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:translate-y-1" />
+            </a>
+          </motion.div>
+        </motion.div>
 
         <motion.div
-          variants={itemVariants}
-          className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between border-t border-ink-foreground/10 pt-8"
+          variants={frameVariants}
+          initial="hidden"
+          animate="visible"
+          className="md:col-span-6 lg:col-span-6"
         >
-          <p className="max-w-md text-pretty text-sm md:text-base font-light leading-relaxed text-ink-foreground/70 antialiased">
-            {tagline}
+          <div className="relative mx-auto max-w-sm md:max-w-none">
+            <div
+              aria-hidden
+              className="absolute -bottom-4 -right-4 h-full w-full border border-border bg-accent/10 md:-bottom-5 md:-right-5"
+            />
+
+            <div className="relative aspect-4/5 w-full overflow-hidden bg-muted ring-1 ring-border">
+              <motion.div style={{ y: imageY, scale: imageScale }} className="absolute inset-0 will-change-transform">
+                {imageUrl ? (
+                  <Image
+                    src={imageUrl}
+                    alt={title}
+                    fill
+                    priority
+                    sizes="(min-width: 768px) 42vw, 88vw"
+                    className="object-cover object-center contrast-[1.03] saturate-[1.03]"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-muted" />
+                )}
+              </motion.div>
+            </div>
+          </div>
+
+          <p className="mt-5 flex max-w-sm items-center gap-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground md:max-w-none">
+            <span>{eyebrow}</span>
+            <span className="h-px flex-1 bg-border" />
+            <span>2026</span>
           </p>
-          
-          <a
-            href="#work"
-            className="group relative inline-flex items-center gap-3 self-start text-xs font-semibold uppercase tracking-[0.25em] text-ink-foreground py-1"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Ver trabajos seleccionados
-              <ArrowDownRight className="h-4 w-4 transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:scale-110 text-glow" />
-            </span>
-            <span className="absolute bottom-0 left-0 h-px w-full bg-ink-foreground/30 transition-all duration-500 group-hover:bg-glow group-hover:h-[1.5px]" />
-          </a>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

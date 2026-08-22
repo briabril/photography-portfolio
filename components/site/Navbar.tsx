@@ -25,10 +25,10 @@ export function Navbar({ siteName }: { siteName: string }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "border-b border-border/70 bg-background/85 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+          ? "border-b border-border/70 bg-background/90 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.02)]"
+          : "border-b border-transparent bg-background/60 backdrop-blur-sm"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:h-20 lg:px-10">
