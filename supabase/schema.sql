@@ -29,20 +29,15 @@ create table journal (
 );
 
 -- Tabla de contenido de texto/imagen del sitio (hero, bio, contacto, etc)
--- Modelo clave/valor: simple y flexible, sin tener que migrar la tabla
--- cada vez que se agrega un campo nuevo al sitio. Para imágenes, el
--- "value" guarda el storage_path dentro del bucket "photos" (no la URL
--- completa), igual que en la tabla `photos`.
 create table site_content (
     key text primary key,
     value text not null default ''
 );
 
--- ============================================================
+============================================================
 -- ROW LEVEL SECURITY (RLS)
 -- Esto es lo que hace que sea seguro publicar el proyecto:
--- por defecto, nadie puede leer ni escribir nada. Después
--- abrimos permisos con "policies" bien específicas.
+-- por defecto, nadie puede leer ni escribir nada.
 -- ============================================================
 
 alter table photos enable row level security;
@@ -124,9 +119,7 @@ create policy "Usuarios autenticados pueden insertar contenido"
 -- ============================================================
 -- STORAGE: bucket único para todas las imágenes del sitio
 -- (fotos de portfolio, tapas de journal, foto de hero/perfil).
--- Se puede crear desde el Dashboard (Storage > New bucket) pero
--- lo dejamos acá para que quede documentado y se cree solo.
--- ============================================================
+============================================================
 
 insert into storage.buckets (id, name, public)
 values ('photos', 'photos', true)
@@ -156,10 +149,7 @@ create policy "Usuarios autenticados pueden borrar imagenes"
 
 -- ============================================================
 -- Datos iniciales de ejemplo para site_content
--- Estos textos se editan después desde /panel/dashboard.
--- Las claves *_image_path arrancan vacías: hasta que no subas una
--- imagen desde el panel, la sección muestra un color de fondo liso.
--- ============================================================
+-- Estos textos se editan después desde /panel/dashboard.============================================================
 
 insert into site_content (key, value) values
     ('site_name', 'Tu Nombre'),

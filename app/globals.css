@@ -15,6 +15,22 @@
 
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
+
+  /* Temas de panel*/
+  --color-panel-bg: #14130f;
+  --color-panel-surface: #1c1a15;
+  --color-panel-surface-hover: #232019;
+  --color-panel-border: #34302b;
+  --color-panel-border-hover: #4a443a;
+  --color-panel-foreground: #f3efe6;
+  --color-panel-muted: #9c9384;
+  --color-panel-subtle: #5c564a;
+  --color-panel-accent: #e3a94d;
+  --color-panel-accent-hover: #f0bb63;
+  --color-panel-accent-foreground: #14130f;
+  --color-panel-success: #7c9a82;
+  --color-panel-success-foreground: #0e1610;
+  --color-panel-danger: #c1502e;
 }
 
 @layer base {

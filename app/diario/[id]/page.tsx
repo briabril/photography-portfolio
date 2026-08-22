@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
@@ -53,10 +54,15 @@ export default async function JournalEntryPage({
         </h1>
 
         {imageUrl && (
-          <div className="mt-10 overflow-hidden bg-muted">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img //cambiar por Image luego
-            src={imageUrl} alt={entry.title} className="aspect-video w-full object-cover" />
+          <div className="relative mt-10 aspect-video w-full overflow-hidden bg-muted">
+            <Image
+              src={imageUrl}
+              alt={entry.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+              className="object-cover"
+            />
           </div>
         )}
 

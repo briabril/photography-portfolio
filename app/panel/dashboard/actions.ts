@@ -75,8 +75,6 @@ export async function updateSiteContent(key: SiteContentKey, value: string) {
 }
 
 export async function uploadSiteImage(key: SiteContentKey, formData: FormData) {
-  console.log("entro a uploadsiteimage")
-  
   const supabase = await createClient()
   const file = formData.get("file") as File
   if (!file || file.size === 0) throw new Error("No se seleccionó ningún archivo.")

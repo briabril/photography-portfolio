@@ -1,5 +1,3 @@
-// Estos tipos reflejan las columnas de supabase/schema.sql
-
 export type Photo = {
   id: string
   storage_path: string

@@ -30,7 +30,7 @@ export default function PanelLayout({
 }) {
   return (
     <div
-      className={`${fraunces.variable} ${inter.variable} min-h-screen bg-[#14130F] font-(family-name:--font-body) text-[#F3EFE6] antialiased`}
+      className={`${fraunces.variable} ${inter.variable} min-h-screen bg-panel-bg font-(family-name:--font-body) text-panel-foreground antialiased`}
     >
       {children}
     </div>
