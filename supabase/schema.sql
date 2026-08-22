@@ -34,7 +34,7 @@ create table site_content (
     value text not null default ''
 );
 
-============================================================
+-- ============================================================
 -- ROW LEVEL SECURITY (RLS)
 -- Esto es lo que hace que sea seguro publicar el proyecto:
 -- por defecto, nadie puede leer ni escribir nada.
@@ -119,7 +119,7 @@ create policy "Usuarios autenticados pueden insertar contenido"
 -- ============================================================
 -- STORAGE: bucket único para todas las imágenes del sitio
 -- (fotos de portfolio, tapas de journal, foto de hero/perfil).
-============================================================
+-- ============================================================
 
 insert into storage.buckets (id, name, public)
 values ('photos', 'photos', true)

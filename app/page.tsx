@@ -36,7 +36,7 @@ export default async function HomePage() {
       <main>
         <Hero
           eyebrow={text.hero_eyebrow}
-          title={text.site_name}
+          title={text.hero_title}
           tagline={text.hero_tagline}
           imageUrl={publicUrl(text.hero_image_path)}
         />

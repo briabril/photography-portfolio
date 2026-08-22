@@ -37,13 +37,13 @@ export default async function JournalEntryPage({
       <main className="mx-auto max-w-3xl px-6 pb-24 pt-32 md:pt-40 lg:px-10">
         <Link
           href="/#journal"
-          className="group inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
+          className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
           Volver al diario
         </Link>
 
-        <div className="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="mt-8 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
           <span className="text-accent">{entry.category}</span>
           <span className="h-px w-4 bg-border" />
           <span>{formatDate(entry.created_at)}</span>

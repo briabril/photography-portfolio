@@ -13,7 +13,7 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-10">
       <Reveal>
-        <p className="flex items-center gap-3 text-sm font-medium uppercase tracking-[0.25em] text-muted-foreground">
+        <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
           <span className="h-px w-8 bg-border" />
           Sobre mí
         </p>

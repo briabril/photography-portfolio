@@ -1,16 +1,22 @@
 import type { Metadata } from "next"
-import { Inter, Fraunces } from "next/font/google"
+import { Work_Sans, Fraunces, Space_Mono } from "next/font/google"
 import { createClient } from "@/lib/supabase/server"
 import { getSiteContent } from "@/lib/site-content"
 import "./globals.css"
 
-const inter = Inter({
-  variable: "--font-inter",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
 })
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
+  subsets: ["latin"],
+})
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
   subsets: ["latin"],
 })
 
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${workSans.variable} ${fraunces.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         {children}

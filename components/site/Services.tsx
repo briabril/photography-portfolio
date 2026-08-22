@@ -11,7 +11,7 @@ export function Services() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-4">
             <Reveal>
-              <p className="flex items-center gap-3 text-sm font-medium uppercase tracking-[0.25em] text-muted-foreground">
+              <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
                 <span className="h-px w-8 bg-border" />
                 Servicios
               </p>
@@ -31,7 +31,7 @@ export function Services() {
             {services.map((service, i) => (
               <motion.div key={service.title} variants={fadeUp} className="group border-t border-border py-8">
                 <div className="flex items-baseline gap-4">
-                  <span className="font-serif text-sm text-accent">
+                  <span className="font-mono text-sm text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-serif text-2xl font-light">{service.title}</h3>

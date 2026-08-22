@@ -47,14 +47,14 @@ export function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/95 p-4 md:p-10"
+          className="fixed inset-0 z-60 flex items-center justify-center bg-ink/97 p-4 md:p-10"
           onClick={onClose}
         >
           <button
             type="button"
             onClick={onClose}
             aria-label="Cerrar"
-            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center text-background/80 transition-colors hover:text-background md:right-8 md:top-8"
+            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center text-ink-foreground/80 transition-colors hover:text-glow md:right-8 md:top-8"
           >
             <X className="h-6 w-6" />
           </button>
@@ -66,7 +66,7 @@ export function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
               e.stopPropagation()
               onNavigate((index! - 1 + items.length) % items.length)
             }}
-            className="absolute left-2 inline-flex h-11 w-11 items-center justify-center text-background/70 transition-colors hover:text-background md:left-8"
+            className="absolute left-2 inline-flex h-11 w-11 items-center justify-center text-ink-foreground/70 transition-colors hover:text-glow md:left-8"
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
@@ -78,7 +78,7 @@ export function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
               e.stopPropagation()
               onNavigate((index! + 1) % items.length)
             }}
-            className="absolute right-2 inline-flex h-11 w-11 items-center justify-center text-background/70 transition-colors hover:text-background md:right-8"
+            className="absolute right-2 inline-flex h-11 w-11 items-center justify-center text-ink-foreground/70 transition-colors hover:text-glow md:right-8"
           >
             <ChevronRight className="h-7 w-7" />
           </button>
@@ -93,14 +93,17 @@ export function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */ }
-            <img //cambiar por Image después
+            <img
               src={item.imageUrl}
               alt={item.title}
               className="max-h-[78svh] w-auto max-w-full object-contain"
             />
-            <figcaption className="mt-5 flex items-center gap-4 text-background">
+            <figcaption className="mt-5 flex items-center gap-4 text-ink-foreground">
+              <span className="font-mono text-xs text-glow">
+                N.&#176; {String((isOpen ? index! : 0) + 1).padStart(2, "0")}
+              </span>
               <span className="font-serif text-lg">{item.title}</span>
-              <span className="text-xs uppercase tracking-[0.2em] text-background/70">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-foreground/60">
                 {item.category} · {item.year}
               </span>
             </figcaption>

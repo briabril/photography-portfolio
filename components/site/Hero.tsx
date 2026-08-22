@@ -41,7 +41,7 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
   }
 
   return (
-    <section id="top" ref={ref} className="relative h-svh min-h-160 w-full overflow-hidden bg-zinc-950 select-none">
+    <section id="top" ref={ref} className="relative h-svh min-h-160 w-full overflow-hidden bg-ink select-none">
       <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform z-0">
         {imageUrl ? (
           <Image
@@ -53,11 +53,11 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
             className="object-cover object-center contrast-[1.05] brightness-[0.9]"
           />
         ) : (
-          <div className="h-full w-full bg-zinc-900" />
+          <div className="h-full w-full bg-ink-soft" />
         )}
         <motion.div 
           style={{ opacity: overlay }} 
-          className="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-950/40 to-transparent mix-blend-multiply" 
+          className="absolute inset-0 bg-linear-to-t from-ink via-ink/40 to-transparent mix-blend-multiply" 
         />
       </motion.div>
 
@@ -69,36 +69,36 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
       >
         <motion.p
           variants={itemVariants}
-          className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/60"
+          className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-glow"
         >
-          <span className="h-px w-10 bg-linear-to-r from-white/60 to-transparent" />
+          <span className="h-px w-10 bg-linear-to-r from-glow/70 to-transparent" />
           {eyebrow}
         </motion.p>
 
         <motion.h1
           variants={itemVariants}
-          className="max-w-5xl font-serif text-[clamp(2.5rem,7.5vw,6.5rem)] font-extralight tracking-tight leading-[0.95] text-white text-balance"
+          className="max-w-5xl font-serif text-[clamp(2.5rem,7.5vw,6.5rem)] font-extralight tracking-tight leading-[0.95] text-ink-foreground text-balance"
         >
           {title}
         </motion.h1>
 
         <motion.div
           variants={itemVariants}
-          className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between border-t border-white/10 pt-8"
+          className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between border-t border-ink-foreground/10 pt-8"
         >
-          <p className="max-w-md text-pretty text-sm md:text-base font-light leading-relaxed text-white/70 antialiased">
+          <p className="max-w-md text-pretty text-sm md:text-base font-light leading-relaxed text-ink-foreground/70 antialiased">
             {tagline}
           </p>
           
           <a
             href="#work"
-            className="group relative inline-flex items-center gap-3 self-start text-xs font-semibold uppercase tracking-[0.25em] text-white py-1"
+            className="group relative inline-flex items-center gap-3 self-start text-xs font-semibold uppercase tracking-[0.25em] text-ink-foreground py-1"
           >
             <span className="relative z-10 flex items-center gap-2">
               Ver trabajos seleccionados
-              <ArrowDownRight className="h-4 w-4 transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:scale-110 text-white/80" />
+              <ArrowDownRight className="h-4 w-4 transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:scale-110 text-glow" />
             </span>
-            <span className="absolute bottom-0 left-0 h-px w-full bg-white/30 transition-all duration-500 group-hover:bg-white group-hover:h-[1.5px]" />
+            <span className="absolute bottom-0 left-0 h-px w-full bg-ink-foreground/30 transition-all duration-500 group-hover:bg-glow group-hover:h-[1.5px]" />
           </a>
         </motion.div>
       </motion.div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { Reveal } from "./Reveal"
 import { Lightbox, type LightboxItem } from "./Lightbox"
@@ -43,7 +44,7 @@ export function Work({ photos }: { photos: WorkPhoto[] }) {
     <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-10">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <Reveal>
-          <p className="flex items-center gap-3 text-sm font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
             <span className="h-px w-8 bg-border" />
             Trabajos seleccionados
           </p>
@@ -93,18 +94,21 @@ export function Work({ photos }: { photos: WorkPhoto[] }) {
               transition={{ duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className={`group relative overflow-hidden bg-muted text-left ${spanClasses(i)}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img //cambiar por Image después
+              <Image
                 src={item.imageUrl}
                 alt={item.title}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <span className="absolute left-3 top-3 rounded-sm bg-ink/70 px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-glow backdrop-blur-sm">
+                N.&#176; {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-x-0 bottom-0 flex translate-y-3 items-end justify-between p-5 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                 <div>
-                  <p className="font-serif text-xl text-background">{item.title}</p>
-                  <p className="text-xs uppercase tracking-[0.2em] text-background/75">
+                  <p className="font-serif text-xl text-ink-foreground">{item.title}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-glow">
                     {item.category}
                   </p>
                 </div>
