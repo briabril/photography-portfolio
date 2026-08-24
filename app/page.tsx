@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { getSiteContent } from "@/lib/site-content"
 import { publicUrl } from "@/lib/storage"
 import { Navbar } from "@/components/site/Navbar"
@@ -10,8 +10,10 @@ import { Journal, type JournalCard } from "@/components/site/Journal"
 import { Contact } from "@/components/site/Contact"
 import { Footer } from "@/components/site/Footer"
 
+export const revalidate = 300
+
 export default async function HomePage() {
-  const supabase = await createClient()
+  const supabase = createPublicClient()
 
   const [{ data: content }, { data: photos }, { data: journalRows }] = await Promise.all([
     supabase.from("site_content").select("*"),

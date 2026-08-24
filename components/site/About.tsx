@@ -1,5 +1,4 @@
 import { Reveal } from "./Reveal"
-import { stats } from "@/lib/config"
 import Image from "next/image"
 
 type AboutProps = {
@@ -10,6 +9,8 @@ type AboutProps = {
 }
 
 export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
+
+
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:px-10">
       <Reveal>
@@ -52,17 +53,6 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
           </Reveal>
         </div>
       </div>
-
-      <Reveal delay={0.1}>
-        <dl className="mt-14 grid grid-cols-2 gap-y-8 border-t border-border pt-10 md:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label}>
-              <dt className="font-serif text-4xl font-light md:text-5xl">{stat.value}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{stat.label}</dd>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
     </section>
   )
 }

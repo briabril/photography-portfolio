@@ -2,11 +2,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { getSiteContent } from "@/lib/site-content"
 import { publicUrl } from "@/lib/storage"
 import { Navbar } from "@/components/site/Navbar"
 import { Footer } from "@/components/site/Footer"
+
+export const revalidate = 300
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })
@@ -18,7 +20,7 @@ export default async function JournalEntryPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const supabase = await createClient()
+  const supabase = createPublicClient()
 
   const [{ data: entry }, { data: content }] = await Promise.all([
     supabase.from("journal").select("*").eq("id", id).eq("published", true).maybeSingle(),
