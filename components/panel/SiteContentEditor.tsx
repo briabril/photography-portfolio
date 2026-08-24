@@ -6,7 +6,7 @@ import { CONTENT_FIELDS, type SiteContentKey, type SiteContentMap } from "@/lib/
 import { publicUrl } from "@/lib/storage"
 import { updateSiteContent, uploadSiteImage } from "@/app/panel/dashboard/actions"
 import { SaveButton, type SaveStatus } from "@/components/panel/SaveButton"
-import { PanelInput, PanelTextarea } from "@/components/panel/PanelControls"
+import { PanelInput, PanelTextarea, PanelEyebrow } from "@/components/panel/PanelControls"
 import { useFilePreview } from "@/hooks/useFilePreview"
 import { useSavableField } from "@/hooks/useSavableField"
 
@@ -17,9 +17,9 @@ export default function SiteContentEditor({ content }: { content: SiteContentMap
     <div className="space-y-10">
       {sections.map((section) => (
         <div key={section}>
-          <h3 className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-panel-subtle">
-            {section}
-          </h3>
+          <div className="mb-4">
+            <PanelEyebrow>{section}</PanelEyebrow>
+          </div>
           <div className="space-y-5">
             {CONTENT_FIELDS.filter((f) => f.section === section).map((field) =>
               field.type === "image" ? (
@@ -128,43 +128,47 @@ function ImageField({
         {status === "error" && <span className="text-xs text-panel-danger">No se pudo subir</span>}
       </div>
 
-      {/* Toda la miniatura es el disparador del selector de archivo: pasar
-          el mouse revela el overlay de edición, como una hoja de contactos. */}
-      <label className="group relative block h-40 w-full max-w-xs cursor-pointer overflow-hidden rounded-xl border border-panel-border bg-panel-bg">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={label}
-            fill
-            unoptimized={Boolean(preview.previewUrl)}
-            sizes="320px"
-            className="object-cover transition-opacity duration-200 group-hover:opacity-40"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-xs text-panel-subtle">Sin imagen</div>
-        )}
-
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 opacity-0 transition-opacity duration-200 group-hover:bg-panel-bg/40 group-hover:opacity-100">
-          <CameraIcon />
-          <span className="text-xs font-medium text-panel-foreground">Cambiar imagen</span>
-        </div>
-
-        {status === "saving" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-panel-bg/60">
-            <Spinner />
-          </div>
-        )}
-
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          disabled={status === "saving"}
-          aria-label={label}
-          className="sr-only"
+      <div className="relative h-40 w-full max-w-xs">
+        <div
+          aria-hidden
+          className="absolute -bottom-2 -right-2 h-full w-full rounded-xl border border-panel-border bg-panel-accent/10"
         />
-      </label>
+        <label className="group relative block h-full w-full cursor-pointer overflow-hidden rounded-xl border border-panel-border bg-panel-bg">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={label}
+              fill
+              unoptimized={Boolean(preview.previewUrl)}
+              sizes="320px"
+              className="object-cover transition-opacity duration-200 group-hover:opacity-40"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs text-panel-subtle">Sin imagen</div>
+          )}
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 opacity-0 transition-opacity duration-200 group-hover:bg-panel-bg/40 group-hover:opacity-100">
+            <CameraIcon />
+            <span className="text-xs font-medium text-panel-foreground">Cambiar imagen</span>
+          </div>
+
+          {status === "saving" && (
+            <div className="absolute inset-0 flex items-center justify-center bg-panel-bg/60">
+              <Spinner />
+            </div>
+          )}
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={status === "saving"}
+            aria-label={label}
+            className="sr-only"
+          />
+        </label>
+      </div>
     </div>
   )
 }

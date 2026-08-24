@@ -1,4 +1,5 @@
-import type { InputHTMLAttributes, TextareaHTMLAttributes } from "react"
+import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react"
+import { ArrowUpRight } from "lucide-react"
 
 const fieldBase =
   "w-full rounded-lg border border-panel-border bg-panel-bg text-panel-foreground placeholder:text-panel-subtle transition-colors focus:border-panel-accent/50 focus:outline-none focus:ring-1 focus:ring-panel-accent/30"
@@ -32,7 +33,6 @@ export function PanelFieldLabel({ htmlFor, children }: { htmlFor: string; childr
   )
 }
 
-/** Franja "Publicada / Borrador" que se superpone a una miniatura. */
 export function PublishedBadge({ published }: { published: boolean }) {
   return (
     <span
@@ -47,7 +47,6 @@ export function PublishedBadge({ published }: { published: boolean }) {
   )
 }
 
-/** Checkbox de "Publicar" con la etiqueta incluida. */
 export function PublishToggle({
   checked,
   onChange,
@@ -71,7 +70,6 @@ export function PublishToggle({
   )
 }
 
-/** Botón de borrado que pide confirmación antes de ejecutar la acción. */
 export function DeleteButton({
   onDelete,
   itemLabel,
@@ -99,12 +97,75 @@ export function DeleteButton({
   )
 }
 
-/** Título de sección con línea divisoria, usado dentro de cada bloque del dashboard. */
 export function PanelSectionHeader({ title }: { title: string }) {
   return (
     <div className="mb-6 flex items-center gap-3">
       <h2 className="font-(family-name:--font-display) text-xl italic text-panel-foreground">{title}</h2>
       <div className="h-px flex-1 bg-panel-border" />
+    </div>
+  )
+}
+
+export function PanelEyebrow({ children }: { children: ReactNode }) {
+  return (
+    <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-panel-subtle">
+      <span className="h-px w-8 bg-panel-border" />
+      {children}
+    </p>
+  )
+}
+
+export function PanelLinkButton({
+  href,
+  onClick,
+  type = "button",
+  variant = "ghost",
+  disabled,
+  children,
+}: {
+  href?: string
+  onClick?: () => void
+  type?: "button" | "submit"
+  variant?: "ghost" | "solid"
+  disabled?: boolean
+  children: ReactNode
+}) {
+  const base =
+    "group inline-flex shrink-0 items-center gap-2 rounded-full text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+  const tone =
+    variant === "solid"
+      ? "bg-panel-accent px-5 py-2.5 text-panel-accent-foreground hover:bg-panel-accent-hover"
+      : "border border-panel-border px-5 py-2.5 text-panel-muted hover:border-panel-accent/40 hover:text-panel-accent"
+
+  const content = (
+    <>
+      {children}
+      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </>
+  )
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={`${base} ${tone}`}>
+        {content}
+      </a>
+    )
+  }
+
+  return (
+    <button type={type} onClick={onClick} disabled={disabled} className={`${base} ${tone}`}>
+      {content}
+    </button>
+  )
+}
+
+export function PanelFrame({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={`relative ${className}`}>
+      <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full border border-panel-border bg-panel-accent/10" />
+      <div className="relative h-full w-full overflow-hidden rounded-lg border border-panel-border bg-panel-bg">
+        {children}
+      </div>
     </div>
   )
 }

@@ -9,6 +9,7 @@ import {
   toggleJournalPublished,
   deleteJournalEntry,
 } from "@/app/panel/dashboard/actions";
+import { ArrowUpRight } from "lucide-react";
 import { SaveButton } from "@/components/panel/SaveButton";
 import {
   PanelInput,
@@ -17,6 +18,8 @@ import {
   PublishedBadge,
   PublishToggle,
   DeleteButton,
+  PanelEyebrow,
+  PanelFrame,
 } from "@/components/panel/PanelControls";
 import { useFilePreview } from "@/hooks/useFilePreview";
 import { useSavableField } from "@/hooks/useSavableField";
@@ -41,12 +44,12 @@ export default function JournalManager({ entries }: { entries: JournalEntry[] })
 
   return (
     <div className="space-y-8">
-      {/* Formulario de nueva entrada */}
       <form
         ref={formRef}
         action={handleCreate}
         className="space-y-3 rounded-xl border border-dashed border-panel-border bg-panel-surface/50 p-5"
       >
+        <PanelEyebrow>Diario</PanelEyebrow>
         <p className="font-(family-name:--font-display) text-base italic text-panel-foreground">
           Nueva entrada de diario
         </p>
@@ -88,14 +91,16 @@ export default function JournalManager({ entries }: { entries: JournalEntry[] })
           <button
             type="submit"
             disabled={isPending}
-            className="ml-auto rounded-full bg-panel-accent px-4 py-2 text-sm font-medium text-panel-accent-foreground transition-colors hover:bg-panel-accent-hover disabled:opacity-50"
+            className="group ml-auto inline-flex items-center gap-2 rounded-full bg-panel-accent px-4 py-2 text-sm font-medium text-panel-accent-foreground transition-colors hover:bg-panel-accent-hover disabled:opacity-50"
           >
             {isPending ? "Guardando…" : "Crear entrada"}
+            {!isPending && (
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            )}
           </button>
         </div>
       </form>
 
-      {/* Entradas existentes */}
       <div className="space-y-4">
         {entries.map((entry) => (
           <JournalCard key={entry.id} entry={entry} />
@@ -133,16 +138,16 @@ function JournalCard({ entry }: { entry: JournalEntry }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-panel-border bg-panel-surface transition-colors hover:border-panel-border-hover">
-      <div className="flex flex-col gap-4 p-4 sm:flex-row">
-        <div className="relative h-36 w-full shrink-0 overflow-hidden rounded-lg bg-panel-bg sm:w-44">
+    <div className="rounded-xl border border-panel-border bg-panel-surface p-4 transition-colors hover:border-panel-border-hover">
+      <div className="flex flex-col gap-5 sm:flex-row">
+        <PanelFrame className="h-36 w-full shrink-0 sm:w-44">
           {imageUrl ? (
             <Image src={imageUrl} alt={entry.title} fill sizes="176px" className="object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-xs text-panel-subtle">Sin tapa</div>
           )}
           <PublishedBadge published={entry.published} />
-        </div>
+        </PanelFrame>
 
         <div className="flex-1 space-y-2">
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

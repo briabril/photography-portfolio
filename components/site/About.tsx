@@ -11,7 +11,7 @@ type AboutProps = {
 
 export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-10">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:px-10">
       <Reveal>
         <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
           <span className="h-px w-8 bg-border" />
@@ -19,16 +19,16 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
         </p>
       </Reveal>
 
-      <div className="mt-10 grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
-        <div className="md:col-span-5">
+      <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-12 md:items-center md:gap-12">
+        <div className="md:col-span-6">
           <Reveal>
-            <div className="relative w-full aspect-4/5 overflow-hidden bg-muted">
+            <div className="relative mx-auto aspect-3/4 w-full max-w-sm overflow-hidden bg-muted ring-1 ring-border md:mx-0 md:max-w-none">
               {imageUrl ? (
                 <Image
                   src={imageUrl}
                   alt={`Retrato de ${siteName}`}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 42vw, 400px"
+                  sizes="(max-width: 768px) 90vw, (max-width: 1200px) 46vw, 520px"
                   className="object-cover grayscale transition-all duration-700 hover:grayscale-0"
                 />
               ) : (
@@ -38,7 +38,7 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
           </Reveal>
         </div>
 
-        <div className="flex flex-col justify-center md:col-span-7">
+        <div className="flex flex-col justify-center md:col-span-6">
           <Reveal delay={0.1}>
             <h2 className="font-serif text-[clamp(1.9rem,4vw,3.25rem)] font-light leading-[1.1] text-balance">
               {heading}
@@ -46,7 +46,7 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-8 max-w-xl space-y-5 whitespace-pre-line text-pretty leading-relaxed text-muted-foreground">
+            <div className="mt-6 max-w-xl space-y-5 whitespace-pre-line text-pretty leading-relaxed text-muted-foreground">
               {bio}
             </div>
           </Reveal>
@@ -54,7 +54,7 @@ export function About({ heading, bio, imageUrl, siteName }: AboutProps) {
       </div>
 
       <Reveal delay={0.1}>
-        <dl className="mt-20 grid grid-cols-2 gap-y-10 border-t border-border pt-12 md:grid-cols-4">
+        <dl className="mt-14 grid grid-cols-2 gap-y-8 border-t border-border pt-10 md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label}>
               <dt className="font-serif text-4xl font-light md:text-5xl">{stat.value}</dt>

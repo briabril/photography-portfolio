@@ -9,6 +9,7 @@ import {
   togglePublished,
   deletePhoto,
 } from "@/app/panel/dashboard/actions";
+import { ArrowUpRight } from "lucide-react";
 import { SaveButton } from "@/components/panel/SaveButton";
 import {
   PanelInput,
@@ -16,6 +17,8 @@ import {
   PublishedBadge,
   PublishToggle,
   DeleteButton,
+  PanelEyebrow,
+  PanelFrame,
 } from "@/components/panel/PanelControls";
 import { useFilePreview } from "@/hooks/useFilePreview";
 import { useSavableField } from "@/hooks/useSavableField";
@@ -49,6 +52,7 @@ export default function PhotoManager({ photos }: { photos: Photo[] }) {
         action={handleUpload}
         className="space-y-3 rounded-xl border border-dashed border-panel-border bg-panel-surface/50 p-5"
       >
+        <PanelEyebrow>Trabajos</PanelEyebrow>
         <p className="font-(family-name:--font-display) text-base italic text-panel-foreground">
           Subir una foto nueva
         </p>
@@ -84,9 +88,12 @@ export default function PhotoManager({ photos }: { photos: Photo[] }) {
           <button
             type="submit"
             disabled={isPending}
-            className="shrink-0 rounded-full bg-panel-accent px-4 py-2 text-sm font-medium text-panel-accent-foreground transition-colors hover:bg-panel-accent-hover disabled:opacity-50"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-panel-accent px-4 py-2 text-sm font-medium text-panel-accent-foreground transition-colors hover:bg-panel-accent-hover disabled:opacity-50"
           >
             {isPending ? "Subiendo…" : "Subir foto"}
+            {!isPending && (
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            )}
           </button>
         </div>
       </form>
@@ -116,8 +123,8 @@ function PhotoCard({ photo, imageUrl }: { photo: Photo; imageUrl: string }) {
   }
 
   return (
-    <div className="group overflow-hidden rounded-xl border border-panel-border bg-panel-surface transition-colors hover:border-panel-border-hover">
-      <div className="relative aspect-square overflow-hidden bg-panel-bg">
+    <div className="group rounded-xl bg-panel-surface p-3 transition-colors">
+      <PanelFrame className="aspect-square">
         <Image
           src={imageUrl}
           alt={photo.title || "Foto"}
@@ -126,9 +133,9 @@ function PhotoCard({ photo, imageUrl }: { photo: Photo; imageUrl: string }) {
           className="object-cover"
         />
         <PublishedBadge published={photo.published} />
-      </div>
+      </PanelFrame>
 
-      <div className="space-y-2 p-3">
+      <div className="space-y-2 pt-4">
         <PanelInput
           aria-label="Título"
           size="sm"

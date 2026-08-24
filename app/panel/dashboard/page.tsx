@@ -4,7 +4,7 @@ import PhotoManager from "@/components/panel/PhotoManager"
 import SiteContentEditor from "@/components/panel/SiteContentEditor"
 import JournalManager from "@/components/panel/JournalManager"
 import PanelNav from "@/components/panel/PanelNav"
-import { PanelSectionHeader } from "@/components/panel/PanelControls"
+import { PanelSectionHeader, PanelEyebrow, PanelLinkButton } from "@/components/panel/PanelControls"
 import { signOut } from "./actions"
 
 export default async function DashboardPage() {
@@ -21,19 +21,15 @@ export default async function DashboardPage() {
       <PanelNav />
 
       <main className="mx-auto max-w-4xl px-4 pb-24 pt-8 lg:pl-40 lg:pr-8">
-        <header className="mb-12 flex items-start justify-between gap-4 border-b border-panel-border pb-6">
+        <header className="mb-12 flex flex-col gap-6 border-b border-panel-border pb-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-1 text-xs uppercase tracking-[0.2em] text-panel-subtle">Panel privado</p>
-            <h1 className="font-(family-name:--font-display) text-3xl italic text-panel-foreground">
+            <PanelEyebrow>Panel privado</PanelEyebrow>
+            <h1 className="mt-3 font-(family-name:--font-display) text-3xl italic text-panel-foreground md:text-4xl">
               Administración
             </h1>
-            <a
-              href="/"
-              target="_blank"
-              className="mt-2 inline-block text-sm text-panel-muted underline decoration-panel-border underline-offset-4 transition-colors hover:text-panel-accent"
-            >
-              Ver sitio publicado ↗
-            </a>
+            <div className="mt-4">
+              <PanelLinkButton href="/">Ver sitio publicado</PanelLinkButton>
+            </div>
           </div>
           <form action={signOut}>
             <button className="shrink-0 rounded-full border border-panel-border px-4 py-1.5 text-sm text-panel-muted transition-colors hover:border-panel-danger/40 hover:text-panel-danger">

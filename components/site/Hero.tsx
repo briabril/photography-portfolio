@@ -57,14 +57,14 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
     <section
       id="top"
       ref={ref}
-      className="relative overflow-hidden bg-background pt-28 pb-20 md:pt-40 md:pb-28"
+      className="relative overflow-hidden bg-background pt-24 pb-16 md:pt-36 md:pb-24"
     >
-      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-6 md:grid-cols-12 md:gap-8 lg:gap-16 lg:px-10">
+      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-12 md:gap-10 lg:gap-14 lg:px-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="md:col-span-6 lg:col-span-6"
+          className="md:col-span-5 lg:col-span-5"
         >
           <motion.p
             variants={itemVariants}
@@ -107,15 +107,15 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
           variants={frameVariants}
           initial="hidden"
           animate="visible"
-          className="md:col-span-6 lg:col-span-6"
+          className="md:col-span-7 lg:col-span-7"
         >
-          <div className="relative mx-auto max-w-sm md:max-w-none">
+          <div className="relative mx-auto aspect-4/5 w-full max-w-md overflow-visible sm:max-w-lg md:max-w-none">
             <div
               aria-hidden
-              className="absolute -bottom-4 -right-4 h-full w-full border border-border bg-accent/10 md:-bottom-5 md:-right-5"
+              className="absolute -bottom-4 -right-4 h-full w-full border border-border bg-accent/10 sm:-bottom-5 sm:-right-5 md:-bottom-6 md:-right-6"
             />
 
-            <div className="relative aspect-4/5 w-full overflow-hidden bg-muted ring-1 ring-border">
+            <div className="absolute inset-0 overflow-hidden bg-muted ring-1 ring-border">
               <motion.div style={{ y: imageY, scale: imageScale }} className="absolute inset-0 will-change-transform">
                 {imageUrl ? (
                   <Image
@@ -123,7 +123,7 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
                     alt={title}
                     fill
                     priority
-                    sizes="(min-width: 768px) 42vw, 88vw"
+                    sizes="(min-width: 768px) 56vw, 88vw"
                     className="object-cover object-center contrast-[1.03] saturate-[1.03]"
                   />
                 ) : (
@@ -131,10 +131,15 @@ export function Hero({ eyebrow, title, tagline, imageUrl }: HeroProps) {
                 )}
               </motion.div>
             </div>
+
+            <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-ink/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-glow backdrop-blur-sm md:left-5 md:top-5">
+              <span className="h-1.5 w-1.5 rounded-full bg-glow" />
+              {eyebrow}
+            </div>
           </div>
 
-          <p className="mt-5 flex max-w-sm items-center gap-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground md:max-w-none">
-            <span>{eyebrow}</span>
+          <p className="mx-auto mt-5 flex max-w-md items-center gap-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground sm:max-w-lg md:mx-0 md:max-w-none">
+            <span>Buenos Aires, Argentina</span>
             <span className="h-px flex-1 bg-border" />
             <span>2026</span>
           </p>
