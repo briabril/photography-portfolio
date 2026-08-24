@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const content = getSiteContent(data)
 
   return {
-    title: `${content.site_name} — Fotografía`,
+    title: `${content.site_name} Fotografía`,
     description: content.hero_tagline || `Portfolio de ${content.site_name}`,
   }
 }
