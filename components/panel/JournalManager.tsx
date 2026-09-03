@@ -12,6 +12,10 @@ import {
 import { ArrowUpRight } from "lucide-react";
 import { SaveButton } from "@/components/panel/SaveButton";
 import {
+  createImagePath,
+  uploadImageDirect,
+} from "@/lib/storage-upload";
+import {
   PanelInput,
   PanelTextarea,
   PanelFieldLabel,
@@ -34,19 +38,53 @@ export default function JournalManager({ entries }: { entries: JournalEntry[] })
   const excerptFieldId = useId();
   const bodyFieldId = useId();
 
-  function handleCreate(formData: FormData) {
-    startTransition(async () => {
-      await createJournalEntry(formData);
-      formRef.current?.reset();
+async function handleCreate(
+  e: React.FormEvent<HTMLFormElement>
+) {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+
+  const file = formData.get("cover");
+
+  startTransition(async () => {
+    let coverPath = "";
+
+    try {
+      if (file instanceof File && file.size > 0) {
+        coverPath = createImagePath("journal");
+
+        await uploadImageDirect(file, coverPath);
+      }
+
+      await createJournalEntry({
+        title: String(formData.get("title") || ""),
+        excerpt: String(formData.get("excerpt") || ""),
+        body: String(formData.get("body") || ""),
+        category: String(formData.get("category") || "General"),
+        coverPath,
+      });
+
+      form.reset();
       preview.clear();
-    });
-  }
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "No se pudo crear la entrada."
+      );
+    }
+  });
+}
 
   return (
     <div className="space-y-8">
       <form
         ref={formRef}
-        action={handleCreate}
+        onSubmit={handleCreate}
         className="space-y-3 rounded-xl border border-dashed border-panel-border bg-panel-surface/50 p-5"
       >
         <PanelEyebrow>Diario</PanelEyebrow>

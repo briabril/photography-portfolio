@@ -12,6 +12,10 @@ import {
 import { ArrowUpRight } from "lucide-react";
 import { SaveButton } from "@/components/panel/SaveButton";
 import {
+  createImagePath,
+  uploadImageDirect,
+} from "@/lib/storage-upload";
+import {
   PanelInput,
   PanelFieldLabel,
   PublishedBadge,
@@ -37,19 +41,48 @@ export default function PhotoManager({ photos }: { photos: Photo[] }) {
     return supabase.storage.from("photos").getPublicUrl(path).data.publicUrl;
   }
 
-  async function handleUpload(formData: FormData) {
+  async function handleUpload(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const file = formData.get("file");
+
+    if (!(file instanceof File) || file.size === 0) {
+      return;
+    }
+
     startTransition(async () => {
-      await uploadPhoto(formData);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      preview.clear();
+      try {
+        const path = createImagePath();
+
+        await uploadImageDirect(file, path);
+
+        await uploadPhoto(
+          path,
+          String(formData.get("title") || ""),
+          String(formData.get("category") || "general")
+        );
+
+        form.reset();
+        preview.clear();
+      } catch (error) {
+        console.error(error);
+
+        alert(
+          error instanceof Error
+            ? error.message
+            : "No se pudo subir la imagen."
+        );
+      }
     });
   }
 
   return (
     <div className="space-y-6">
-      {/* Formulario de subida */}
       <form
-        action={handleUpload}
+        onSubmit={handleUpload}
         className="space-y-3 rounded-xl border border-dashed border-panel-border bg-panel-surface/50 p-5"
       >
         <PanelEyebrow>Trabajos</PanelEyebrow>

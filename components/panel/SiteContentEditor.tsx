@@ -1,6 +1,10 @@
 "use client"
 
 import { useId, useRef, useState } from "react"
+import {
+  createImagePath,
+  uploadImageDirect,
+} from "@/lib/storage-upload";
 import Image from "next/image"
 import { CONTENT_FIELDS, type SiteContentKey, type SiteContentMap } from "@/lib/site-content"
 import { publicUrl } from "@/lib/storage"
@@ -96,28 +100,40 @@ function ImageField({
 
   const imageUrl = preview.previewUrl ?? publicUrl(value)
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
+  async function handleFileChange(
+  e: React.ChangeEvent<HTMLInputElement>
+) {
+  const file = e.target.files?.[0];
 
-    preview.selectFile(file)
-    setStatus("saving")
+  if (!file) return;
 
-    const formData = new FormData()
-    formData.set("file", file)
+  preview.selectFile(file);
+  setStatus("saving");
 
-    try {
-      await uploadSiteImage(fieldKey, formData)
-      setStatus("saved")
-      setTimeout(() => setStatus("idle"), 1800)
-    } catch (err) {
-      console.error(err)
-      setStatus("error")
-    } finally {
-      preview.clear()
-      if (inputRef.current) inputRef.current.value = ""
+  let path = "";
+
+  try {
+    path = createImagePath(`site/${fieldKey}`);
+
+    await uploadImageDirect(file, path);
+
+    await uploadSiteImage(fieldKey, path);
+
+    setStatus("saved");
+
+    setTimeout(() => setStatus("idle"), 1800);
+  } catch (err) {
+    console.error(err);
+
+    setStatus("error");
+  } finally {
+    preview.clear();
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
   }
+}
 
   return (
     <div className="rounded-xl border border-panel-border bg-panel-surface/50 p-4">

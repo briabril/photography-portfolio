@@ -41,7 +41,7 @@ export function Work({ photos }: { photos: WorkPhoto[] }) {
   if (photos.length === 0) return null
 
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-10">
+    <section id="work" className="mx-auto max-w-6xl px-6 py-5">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <Reveal>
           <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
